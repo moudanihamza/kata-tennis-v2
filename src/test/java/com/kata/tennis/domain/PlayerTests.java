@@ -12,4 +12,11 @@ public class PlayerTests {
         var player = new Player("foo");
         Assertions.assertEquals("foo",player.getName());
     }
+
+    @Test
+    @DisplayName("To string method should return player name")
+    void toString_should_return_player_name(){
+        var player = new Player("foo");
+        Assertions.assertEquals("foo",player.toString());
+    }
 }

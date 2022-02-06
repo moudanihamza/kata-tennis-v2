@@ -1,7 +1,7 @@
 package com.kata.tennis.domain.game;
 
 import com.kata.tennis.domain.Player;
-import com.kata.tennis.domain.game.score.Board;
+import com.kata.tennis.domain.Board;
 import com.kata.tennis.domain.game.score.Score;
 import com.kata.tennis.exceptions.GameOverException;
 import org.junit.jupiter.api.*;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 public class GameTests {
     private static final Player PLAYER_1 = new Player("Player1");
     private static final Player PLAYER_2 = new Player("Player2");
-    private Board board;
+    private Board<Player,Score> board;
     private Game game;
 
     @BeforeEach
@@ -28,9 +28,10 @@ public class GameTests {
     @Test
     @DisplayName("Game should increment the board when a player scores")
     void game_should_increment_the_board_when_a_player_scores() {
-        doNothing().when(board).increment(isA(Player.class));
+        doNothing().when(board).append(isA(Player.class),isA(Score.class));
+        when(board.getLastScore(eq(PLAYER_1))).thenReturn(Score.ZERO);
         game.score(PLAYER_1);
-        verify(board, times(1)).increment(eq(PLAYER_1));
+        verify(board, times(1)).append(eq(PLAYER_1), eq(Score.FIFTEEN));
     }
 
     @Test
@@ -52,15 +53,15 @@ public class GameTests {
     @Test
     @DisplayName("Deuce Mode should be activated when both players have forty")
     void deuce_mode_should_be_activated_when_both_players_have_forty(){
-        doNothing().when(board).increment(isA(Player.class));
+        doNothing().when(board).append(isA(Player.class),isA(Score.class));
         when(board.getLastScore(eq(PLAYER_1))).thenReturn(Score.THIRTY);
         when(board.areScoresEqual(eq(Score.FORTY))).thenReturn(true);
 
         Assertions.assertFalse(game.isDeuceMode());
 
         game.score(PLAYER_1);
-        verify(board).increment(eq(PLAYER_1));
-        verify(board).getLastScore(eq(PLAYER_1));
+        verify(board).append(eq(PLAYER_1), eq(Score.FORTY));
+        verify(board,times(2)).getLastScore(eq(PLAYER_1));
         verify(board).areScoresEqual(eq(Score.FORTY));
 
         Assertions.assertTrue(game.isDeuceMode());

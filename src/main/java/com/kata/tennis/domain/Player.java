@@ -8,4 +8,9 @@ import lombok.Value;
 @EqualsAndHashCode
 public class Player {
     String name;
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

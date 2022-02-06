@@ -1,6 +1,6 @@
-package com.kata.tennis.domain.game.score;
+package com.kata.tennis.domain;
 
-import com.kata.tennis.domain.Player;
+import com.kata.tennis.domain.game.score.Score;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ public class BoardTests {
     @Test
     @DisplayName("Board should return the last score of a player")
     void board_should_return_the_last_score_of_a_player() {
-        var board = new Board(PLAYER_1, PLAYER_2);
+        var board = new Board<>(PLAYER_1, PLAYER_2, Score.ZERO);
 
         Assertions.assertEquals(board.getLastScore(PLAYER_1), Score.ZERO);
         Assertions.assertEquals(board.getLastScore(PLAYER_2), Score.ZERO);
@@ -21,14 +21,14 @@ public class BoardTests {
     @Test
     @DisplayName("Board should increment score of a given player")
     void board_should_increment_score_of_a_given_player() {
-        var board = new Board(PLAYER_1, PLAYER_2);
-        board.increment(PLAYER_1);
-        board.increment(PLAYER_1);
+        var board = new Board<>(PLAYER_1, PLAYER_2, Score.ZERO);
+        board.append(PLAYER_1, Score.ZERO.increment());
+        board.append(PLAYER_1, Score.FIFTEEN.increment());
 
         Assertions.assertEquals(board.getLastScore(PLAYER_1), Score.THIRTY);
         Assertions.assertEquals(board.getLastScore(PLAYER_2), Score.ZERO);
 
-        board.increment(PLAYER_2);
+        board.append(PLAYER_2, Score.ZERO.increment());
 
         Assertions.assertEquals(board.getLastScore(PLAYER_1), Score.THIRTY);
         Assertions.assertEquals(board.getLastScore(PLAYER_2), Score.FIFTEEN);
@@ -37,10 +37,10 @@ public class BoardTests {
     @Test
     @DisplayName("Board should return scores as string")
     void board_should_return_scores_as_string() {
-        var board = new Board(PLAYER_1, PLAYER_2);
-        board.increment(PLAYER_1);
-        board.increment(PLAYER_1);
-        board.increment(PLAYER_2);
+        var board = new Board<>(PLAYER_1, PLAYER_2, Score.ZERO);
+        board.append(PLAYER_1, Score.ZERO.increment());
+        board.append(PLAYER_1, Score.FIFTEEN.increment());
+        board.append(PLAYER_2, Score.ZERO.increment());
 
         var actual = board.toString();
         var expected = String.format("%s : %s \n %s : %s", PLAYER_1.getName(), "0 15 30 30", PLAYER_2.getName(), "0 0 0 15");
@@ -52,13 +52,13 @@ public class BoardTests {
     @Test
     @DisplayName("Board should check if last scores are equal to a given score")
     void board_should_check_if_last_scores_are_equal_to_a_given_score() {
-        var board = new Board(PLAYER_1, PLAYER_2);
+        var board = new Board<>(PLAYER_1, PLAYER_2, Score.ZERO);
         Assertions.assertTrue(board.areScoresEqual(Score.ZERO));
 
-        board.increment(PLAYER_1);
+        board.append(PLAYER_1, Score.ZERO.increment());
         Assertions.assertFalse(board.areScoresEqual(Score.FIFTEEN));
 
-        board.increment(PLAYER_2);
+        board.append(PLAYER_2, Score.ZERO.increment());
         Assertions.assertTrue(board.areScoresEqual(Score.FIFTEEN));
     }
 }

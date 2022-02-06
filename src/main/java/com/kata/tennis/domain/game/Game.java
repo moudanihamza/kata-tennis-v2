@@ -1,7 +1,7 @@
 package com.kata.tennis.domain.game;
 
 import com.kata.tennis.domain.Player;
-import com.kata.tennis.domain.game.score.Board;
+import com.kata.tennis.domain.Board;
 import com.kata.tennis.domain.game.score.Score;
 import com.kata.tennis.exceptions.GameOverException;
 import lombok.extern.slf4j.Slf4j;
@@ -10,13 +10,13 @@ import java.util.Objects;
 
 @Slf4j
 public class Game {
-    private final Board board;
+    private final Board<Player, Score> board;
     private Player winner;
     private boolean deuceMode;
     private Player advantage;
 
     public Game(Player player1, Player player2) {
-        this.board = new Board(player1, player2);
+        this.board = new Board<>(player1, player2, Score.ZERO);
         this.deuceMode = false;
     }
 
@@ -49,7 +49,7 @@ public class Game {
         }
     }
 
-    private boolean gameHasWinner(Player player, Board board, boolean deuceMode, Player advantage) {
+    private boolean gameHasWinner(Player player, Board<Player, Score> board, boolean deuceMode, Player advantage) {
         var isWinner = (board.getLastScore(player) == Score.FORTY && !deuceMode) || (advantage == player && deuceMode);
         if (isWinner) {
             this.winner = player;
@@ -62,8 +62,9 @@ public class Game {
         return Objects.nonNull(winner);
     }
 
-    private void incrementScore(Player player, Board board) {
-        board.increment(player);
+    private void incrementScore(Player player, Board<Player, Score> board) {
+        var score = board.getLastScore(player);
+        board.append(player, score.increment());
         log.info("***************** Game Score: *****************");
         log.info("{}", this.board);
     }
@@ -73,7 +74,7 @@ public class Game {
     }
 
 
-    private boolean isDeuceMode(Board board) {
+    private boolean isDeuceMode(Board<Player, Score> board) {
         return board.areScoresEqual(Score.FORTY);
     }
 }

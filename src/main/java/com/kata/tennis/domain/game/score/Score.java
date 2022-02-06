@@ -29,4 +29,8 @@ public enum Score {
         return this.ordinal() == 0 ? this : SCORES[ordinal() - 1];
     }
 
+    @Override
+    public String toString() {
+        return value;
+    }
 }
