@@ -1,4 +1,4 @@
-package com.kata.tennis.domain.game.score;
+package com.kata.tennis.domain.set.game.score;
 
 /**
  * /!\ please don't change the order /!\

@@ -1,6 +1,6 @@
 package com.kata.tennis.domain;
 
-import com.kata.tennis.domain.game.score.Score;
+import com.kata.tennis.domain.set.game.score.Score;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +16,20 @@ public class BoardTests {
 
         Assertions.assertEquals(board.getLastScore(PLAYER_1), Score.ZERO);
         Assertions.assertEquals(board.getLastScore(PLAYER_2), Score.ZERO);
+    }
+
+    @Test
+    @DisplayName("Board should return the last score of the other player")
+    void board_should_return_the_last_score_of_the_other_player() {
+        var board = new Board<>(PLAYER_1, PLAYER_2, Score.ZERO);
+
+        Assertions.assertEquals(board.getOtherPlayerLastScore(PLAYER_1), Score.ZERO);
+        Assertions.assertEquals(board.getOtherPlayerLastScore(PLAYER_2), Score.ZERO);
+
+        board.append(PLAYER_2,Score.FIFTEEN);
+
+        Assertions.assertEquals(board.getOtherPlayerLastScore(PLAYER_1), Score.FIFTEEN);
+        Assertions.assertEquals(board.getOtherPlayerLastScore(PLAYER_2), Score.ZERO);
     }
 
     @Test
@@ -60,5 +74,17 @@ public class BoardTests {
 
         board.append(PLAYER_2, Score.ZERO.increment());
         Assertions.assertTrue(board.areScoresEqual(Score.FIFTEEN));
+    }
+
+    @Test
+    @DisplayName("Board should return players")
+    void board_should_return_players(){
+        var board = new Board<>(PLAYER_1, PLAYER_2, Score.ZERO);
+        Assertions.assertEquals(board.getPlayer1(),PLAYER_1);
+        Assertions.assertEquals(board.getPlayer2(),PLAYER_2);
+
+        board = new Board<>(PLAYER_2, PLAYER_1, Score.ZERO);
+        Assertions.assertEquals(board.getPlayer1(),PLAYER_2);
+        Assertions.assertEquals(board.getPlayer2(),PLAYER_1);
     }
 }

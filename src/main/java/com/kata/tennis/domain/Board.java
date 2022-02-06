@@ -2,10 +2,11 @@ package com.kata.tennis.domain;
 
 
 import com.kata.tennis.exceptions.NoSuchPlayerException;
+import com.kata.tennis.utils.ListUtils;
 import com.kata.tennis.utils.Tuple;
+import org.apache.logging.log4j.util.Strings;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Board<U, V> {
     private final Tuple<U, List<V>> row1;
@@ -23,11 +24,24 @@ public class Board<U, V> {
 
     public V getLastScore(U player) {
         var scores = this.findScores(player);
-        return scores.get(scores.size() - 1);
+        return ListUtils.getLast(scores);
+    }
+
+    public V getOtherPlayerLastScore(U player){
+        var scores = this.findScores(this.getOtherPlayerName(player));
+        return ListUtils.getLast(scores);
     }
 
     public boolean areScoresEqual(V score) {
         return this.getLastScore(row1.getLeft()) == score && this.getLastScore(row2.getLeft()) == score;
+    }
+
+    public U getPlayer1() {
+        return  this.row1.getLeft();
+    }
+
+    public U getPlayer2() {
+        return  this.row2.getLeft();
     }
 
     @Override
@@ -69,7 +83,7 @@ public class Board<U, V> {
 
 
     private String listAsString(List<V> scores) {
-        return scores.stream().map(V::toString).collect(Collectors.joining(" "));
+       return Strings.join(scores, ' ');
     }
 
     private List<V> findScores(U player) {

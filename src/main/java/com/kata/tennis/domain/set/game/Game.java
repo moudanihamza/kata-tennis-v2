@@ -1,23 +1,24 @@
-package com.kata.tennis.domain.game;
+package com.kata.tennis.domain.set.game;
 
 import com.kata.tennis.domain.Player;
 import com.kata.tennis.domain.Board;
-import com.kata.tennis.domain.game.score.Score;
-import com.kata.tennis.exceptions.GameOverException;
+import com.kata.tennis.domain.set.game.score.Score;
+import com.kata.tennis.exceptions.set.game.GameOverException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
 @Slf4j
 public class Game {
+    private static final Score INIT_VALUE = Score.ZERO;
     private final Board<Player, Score> board;
     private Player winner;
     private boolean deuceMode;
     private Player advantage;
 
     public Game(Player player1, Player player2) {
-        this.board = new Board<>(player1, player2, Score.ZERO);
-        this.deuceMode = false;
+        this.board = new Board<>(player1, player2, INIT_VALUE);
+        this.setDeuceMode(false);
     }
 
     public void score(Player player) {
@@ -30,6 +31,10 @@ public class Game {
 
     public Player getWinner() {
         return winner;
+    }
+
+    public boolean hasWinner() {
+        return Objects.nonNull(this.winner);
     }
 
     public Player getAdvantage() {
@@ -45,8 +50,13 @@ public class Game {
             this.advantage = this.computeAdvantage(player, this.advantage);
         } else {
             this.incrementScore(player, this.board);
-            this.deuceMode = this.isDeuceMode(this.board);
+            this.setDeuceMode(this.isDeuceMode(this.board));
         }
+    }
+
+    private void setDeuceMode(boolean deuceMode) {
+        this.deuceMode = deuceMode;
+        log.info("***************** Deuce Mode Activated : {} *****************", this.deuceMode);
     }
 
     private boolean gameHasWinner(Player player, Board<Player, Score> board, boolean deuceMode, Player advantage) {
@@ -55,7 +65,7 @@ public class Game {
             this.winner = player;
             log.info("***************** Game Winner is : {} *****************", player);
         }
-        return Objects.nonNull(this.winner);
+        return this.hasWinner();
     }
 
     private boolean isGameOver(Player winner) {
@@ -70,7 +80,11 @@ public class Game {
     }
 
     private Player computeAdvantage(Player player, Player advantage) {
-        return Objects.isNull(advantage) ? player : null;
+        if(Objects.isNull(advantage)) {
+            log.info("***************** Player {} win Advantage *****************", player);
+            return player;
+        }
+        return null;
     }
 
 

@@ -1,9 +1,9 @@
-package com.kata.tennis.domain.game;
+package com.kata.tennis.domain.set.game;
 
 import com.kata.tennis.domain.Player;
 import com.kata.tennis.domain.Board;
-import com.kata.tennis.domain.game.score.Score;
-import com.kata.tennis.exceptions.GameOverException;
+import com.kata.tennis.domain.set.game.score.Score;
+import com.kata.tennis.exceptions.set.game.GameOverException;
 import org.junit.jupiter.api.*;
 import org.springframework.test.util.ReflectionTestUtils;
 
