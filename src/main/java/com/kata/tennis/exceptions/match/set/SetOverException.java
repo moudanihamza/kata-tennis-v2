@@ -1,4 +1,4 @@
-package com.kata.tennis.exceptions.set;
+package com.kata.tennis.exceptions.match.set;
 
 public class SetOverException extends RuntimeException {
     private final static String MESSAGE = "Set is over";

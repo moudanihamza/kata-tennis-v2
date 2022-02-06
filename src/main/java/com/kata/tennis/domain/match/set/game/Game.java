@@ -1,9 +1,9 @@
-package com.kata.tennis.domain.set.game;
+package com.kata.tennis.domain.match.set.game;
 
 import com.kata.tennis.domain.Player;
 import com.kata.tennis.domain.Board;
-import com.kata.tennis.domain.set.game.score.Score;
-import com.kata.tennis.exceptions.set.game.GameOverException;
+import com.kata.tennis.domain.match.set.game.score.Score;
+import com.kata.tennis.exceptions.match.set.game.GameOverException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;

@@ -50,3 +50,16 @@ SPRINT2 : Manage a Tennis SET within a tennis match
                         1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 (-> 8-> 9-> 10-> …)
                  •    The Tie-Break ends as soon as a player gets a least 7 points and 2 points more than his opponent
                  •    The player who wins the Tie-Break wins the Set
+
+SPRINT3 : Manage a Tennis match
+
+      User Story 1 :
+           As a tennis referee
+           I want to manage the score of a tennis match between 2 players
+           In order to display the current set (SPRINT 2) & Match score of each player
+ 
+           Rules details:
+                 •    The Match starts with a score of 0 set for each player
+                 •    Each time a player win a Set (see SPRINT 2), the Match score changes as follow:
+                       1 -> 2 
+                 •    The first player to win two sets wins the match

@@ -1,4 +1,4 @@
-package com.kata.tennis.domain.set.game.score;
+package com.kata.tennis.domain.match.set.game.score;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

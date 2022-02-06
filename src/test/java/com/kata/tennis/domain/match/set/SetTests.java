@@ -1,9 +1,9 @@
-package com.kata.tennis.domain.set;
+package com.kata.tennis.domain.match.set;
 
 import com.kata.tennis.domain.Board;
 import com.kata.tennis.domain.Player;
-import com.kata.tennis.domain.set.game.Game;
-import com.kata.tennis.exceptions.set.SetOverException;
+import com.kata.tennis.domain.match.set.game.Game;
+import com.kata.tennis.exceptions.match.set.SetOverException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -51,7 +51,7 @@ public class SetTests {
         when(this.board.getPlayer1()).thenReturn(PLAYER_1);
         when(this.board.getPlayer2()).thenReturn(PLAYER_2);
 
-        set.score(PLAYER_1);
+        this.set.score(PLAYER_1);
 
         verify(game).hasWinner();
         verify(this.games).get(isA(Integer.class));
@@ -70,7 +70,7 @@ public class SetTests {
         doNothing().when(this.board).append(eq(player), eq(player1NewScore));
         when(this.board.getOtherPlayerLastScore(eq(player))).thenReturn(givenPlayer2Score);
 
-        set.score(PLAYER_1);
+        this.set.score(PLAYER_1);
 
         verify(game, times(2)).hasWinner();
         verify(this.games).get(isA(Integer.class));
@@ -96,7 +96,7 @@ public class SetTests {
 
         Assertions.assertNull(this.set.getWinner());
 
-        set.score(player);
+        this.set.score(player);
 
         verify(game, times(2)).hasWinner();
         verify(this.games).get(isA(Integer.class));

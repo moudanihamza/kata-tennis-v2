@@ -1,10 +1,10 @@
-package com.kata.tennis.domain.set;
+package com.kata.tennis.domain.match.set;
 
 import com.kata.tennis.domain.Board;
 import com.kata.tennis.domain.Player;
-import com.kata.tennis.domain.set.game.Game;
-import com.kata.tennis.exceptions.set.SetOverException;
-import com.kata.tennis.exceptions.set.game.NoSuchGameException;
+import com.kata.tennis.domain.match.set.game.Game;
+import com.kata.tennis.exceptions.match.set.SetOverException;
+import com.kata.tennis.exceptions.match.set.game.NoSuchGameException;
 import com.kata.tennis.utils.ListUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,6 +38,10 @@ public class Set {
         return winner;
     }
 
+    public boolean hasWinner() {
+        return Objects.nonNull(this.winner);
+    }
+
     private boolean isSetOver(Player winner) {
         return Objects.nonNull(winner);
     }
@@ -52,7 +56,7 @@ public class Set {
         } else {
             lastGame.score(player);
             if (lastGame.hasWinner()) {
-                incrementScore(player);
+                this.incrementScore(player);
                 this.checkTieBreak(board);
                 this.checkWinner(player, board, this.tieBreak);
             }
@@ -89,7 +93,7 @@ public class Set {
 
     private void setWinner(Player player) {
         this.winner = player;
-        log.info("***************** Game Winner is : {} *****************", player);
+        log.info("***************** Set Winner is : {} *****************", player);
     }
 
 

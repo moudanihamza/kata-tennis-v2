@@ -1,6 +1,6 @@
 package com.kata.tennis.domain;
 
-import com.kata.tennis.domain.set.game.score.Score;
+import com.kata.tennis.domain.match.set.game.score.Score;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
