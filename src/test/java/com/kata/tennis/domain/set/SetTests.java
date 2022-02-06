@@ -84,7 +84,7 @@ public class SetTests {
     @ParameterizedTest
     @DisplayName("Player should win the set if conditions are matched")
     @MethodSource("winTestArgsSupplier")
-    void player_should_win_the_set_if_condition_are_matched(Player player, int givenPlayer1Score, int givenPlayer2Score) {
+    void player_should_win_the_set_if_condition_are_matched(Player player, int givenPlayer1Score, int givenPlayer2Score, boolean activateTieBreak) {
         var game = mock(Game.class);
         var player1NewScore = givenPlayer1Score + 1;
         when(game.hasWinner()).thenReturn(false).thenReturn(true);
@@ -92,6 +92,7 @@ public class SetTests {
         when(this.board.getLastScore(eq(player))).thenReturn(givenPlayer1Score).thenReturn(player1NewScore);
         doNothing().when(this.board).append(eq(player), eq(player1NewScore));
         when(this.board.getOtherPlayerLastScore(eq(player))).thenReturn(givenPlayer2Score);
+        when(this.board.areScoresEqual(any())).thenReturn(activateTieBreak);
 
         Assertions.assertNull(this.set.getWinner());
 
@@ -114,17 +115,21 @@ public class SetTests {
                 Arguments.of(PLAYER_1, 2, 2),
                 Arguments.of(PLAYER_1, 3, 4),
                 Arguments.of(PLAYER_1, 4, 5),
-                Arguments.of(PLAYER_1, 5, 5)
+                Arguments.of(PLAYER_1, 5, 5),
+                Arguments.of(PLAYER_1, 5, 6),
+                Arguments.of(PLAYER_1, 6, 6),
+                Arguments.of(PLAYER_1, 13, 12)
         );
     }
 
     private static Stream<Arguments> winTestArgsSupplier() {
 
         return Stream.of(
-                Arguments.of(PLAYER_1, 5, 0),
-                Arguments.of(PLAYER_1, 5, 3),
-                Arguments.of(PLAYER_1, 5, 4),
-                Arguments.of(PLAYER_1, 6, 5)
+                Arguments.of(PLAYER_1, 5, 0,false),
+                Arguments.of(PLAYER_1, 5, 3,false),
+                Arguments.of(PLAYER_1, 5, 4,false),
+                Arguments.of(PLAYER_1, 7, 6,true),
+                Arguments.of(PLAYER_1, 11, 10,true)
         );
     }
 }

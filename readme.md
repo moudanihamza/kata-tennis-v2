@@ -49,4 +49,4 @@ SPRINT2 : Manage a Tennis SET within a tennis match
                  •    Each time a player win a point, the score changes as follow:
                         1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 (-> 8-> 9-> 10-> …)
                  •    The Tie-Break ends as soon as a player gets a least 7 points and 2 points more than his opponent
-                 •    The player who wins the Tie-Break wins the Set and the match
+                 •    The player who wins the Tie-Break wins the Set

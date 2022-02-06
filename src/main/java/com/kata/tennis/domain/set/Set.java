@@ -16,9 +16,11 @@ import java.util.Optional;
 @Slf4j
 public class Set {
     private static final int INIT_VALUE = 0;
+    private static final int TIE_BREAK_TRIGGER = 6;
     private final List<Game> games;
     private final Board<Player, Integer> board;
     private Player winner;
+    private boolean tieBreak;
 
     public Set(Player player1, Player player2) {
         this.games = new ArrayList<>() {{
@@ -51,30 +53,43 @@ public class Set {
             lastGame.score(player);
             if (lastGame.hasWinner()) {
                 incrementScore(player);
-                this.checkWinner(player, board);
+                this.checkTieBreak(board);
+                this.checkWinner(player, board, this.tieBreak);
             }
         }
+    }
+
+    private void checkTieBreak(Board<Player, Integer> board) {
+        this.tieBreak = board.areScoresEqual(TIE_BREAK_TRIGGER);
     }
 
     private void incrementScore(Player player) {
         var score = this.board.getLastScore(player);
         this.board.append(player, score + 1);
-        log.info("***************** Game Score: *****************");
+        log.info("***************** Set Score: *****************");
         log.info("{}", this.board);
     }
 
-    private void checkWinner(Player player, Board<Player, Integer> board) {
+    private void checkWinner(Player player, Board<Player, Integer> board, boolean tieBreak) {
         var score1 = board.getLastScore(player);
         var score2 = board.getOtherPlayerLastScore(player);
-        if ((score1 == 6 && score2 <= 4) || score1 == 7 && score2 == 5) {
+        if (defaultScore(score1, score2, tieBreak) || tieBreakScoreRule(score1, score2, tieBreak)) {
             this.setWinner(player);
-            log.info("***************** Game Winner is : {} *****************", player);
         }
 
     }
 
+    private boolean defaultScore(Integer score1, Integer score2, boolean tieBreak) {
+        return ((score1 == 6 && score2 <= 4) || (score1 == 7 && score2 == 5)) && !tieBreak;
+    }
+
+    private boolean tieBreakScoreRule(Integer score1, Integer score2, boolean tieBreak) {
+        return tieBreak && (score1 - score2 >= 2);
+    }
+
     private void setWinner(Player player) {
         this.winner = player;
+        log.info("***************** Game Winner is : {} *****************", player);
     }
 
 
