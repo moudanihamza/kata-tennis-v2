@@ -1,6 +1,5 @@
-package com.kata.tennis.domain.utils;
+package com.kata.tennis.utils;
 
-import com.kata.tennis.utils.ListUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
