@@ -48,4 +48,17 @@ public class BoardTests {
         Assertions.assertEquals(expected, actual);
 
     }
+
+    @Test
+    @DisplayName("Board should check if last scores are equal to a given score")
+    void board_should_check_if_last_scores_are_equal_to_a_given_score() {
+        var board = new Board(PLAYER_1, PLAYER_2);
+        Assertions.assertTrue(board.areScoresEqual(Score.ZERO));
+
+        board.increment(PLAYER_1);
+        Assertions.assertFalse(board.areScoresEqual(Score.FIFTEEN));
+
+        board.increment(PLAYER_2);
+        Assertions.assertTrue(board.areScoresEqual(Score.FIFTEEN));
+    }
 }

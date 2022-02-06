@@ -1,9 +1,9 @@
 package com.kata.tennis.exceptions;
 
-public class GameEndException extends RuntimeException {
+public class GameOverException extends RuntimeException {
     private final static String MESSAGE = "Game has finished";
 
-    public GameEndException() {
+    public GameOverException() {
         super(MESSAGE);
     }
 }

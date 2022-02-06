@@ -27,6 +27,10 @@ public class Board {
         return scores.get(scores.size() - 1);
     }
 
+    public boolean areScoresEqual(Score score) {
+        return this.getLastScore(row1.getLeft()) == score && this.getLastScore(row2.getLeft()) == score;
+    }
+
     @Override
     public String toString() {
         return String.format("%s : %s \n %s : %s",
